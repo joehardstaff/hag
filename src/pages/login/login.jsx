@@ -130,7 +130,7 @@ export function Login() {
               {/* This is the button at the bottom, all sorted i have no issues with it so good stuff all round (i think) */}
               <Button
                 component={RouterLink}
-                to="/dashboard"
+                to="/profile"
                 type="submit"
                 size="md"
                 onClick={function(){}}
@@ -138,7 +138,6 @@ export function Login() {
                 sx={{ 
                     mt: 15, 
                     mb: 2,
-                    bgcolor: 'white',
                     bgcolor: '#272829', 
                     variant:{color:'white'},
                     width: '200px',
