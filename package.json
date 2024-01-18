@@ -18,8 +18,10 @@
     "@mui/material": "^5.15.4",
     "@mui/styled-engine-sc": "^6.0.0-alpha.11",
     "axios": "^1.6.5",
+    "mdb-react-ui-kit": "^7.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.0.1",
     "react-router-dom": "^6.21.2",
     "styled-components": "^6.1.6",
     "switch": "^0.0.0"
