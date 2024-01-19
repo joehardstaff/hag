@@ -12,13 +12,13 @@ import TextField from '@mui/material/TextField';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import MenuIcon from '@mui/icons-material/Menu';
+
 import * as weatherIcons from 'react-icons/wi';
-
-
 
 const drawerWidth = 240;
 
-// Tell the program when the api returns any of these what icon to display
 const WeatherIcons = {
   'Clear': 'WiDaySunny',
   'Partly cloudy': 'WiDayCloudy',
@@ -30,8 +30,6 @@ const WeatherIcons = {
   'Patchy freezing drizzle': 'WiDayShowers',
   'Thundery outbreaks': 'WiThunderstorm',
 };
-
-
 
 const WeatherBox = ({ day, highTemp, lowTemp, description }) => (
   <div style={{
@@ -52,7 +50,6 @@ const WeatherBox = ({ day, highTemp, lowTemp, description }) => (
   </div>
 );
 
-
 export function Coldweather(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -61,30 +58,51 @@ export function Coldweather(props) {
     setMobileOpen(!mobileOpen);
   };
 
+  const container = window !== undefined ? () => window().document.body : undefined;
+
   const drawer = (
     <div>
-      <Toolbar />
-      <Divider />
-      <List>
-        {[
-          { text: 'Profile', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/profile' },
-          { text: 'Air Quality', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/air-quality' },
-          { text: 'Hot Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/hot-weather' },
-          { text: 'Cold Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
-          { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
-        ].map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton component={RouterLink} to={item.path}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} style={{ color: 'white' }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <Drawer
+        container={container}
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          display: {
+            xs: 'block',
+            sm: 'none',
+          },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: drawerWidth,
+            backgroundColor: '#2B3336',
+          },
+        }}
+      >
+        <Toolbar />
+        <Divider />
+        <List sx={{ backgroundColor: '#2B3336' }}>
+          {[
+            { text: 'Profile', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/profile' },
+            { text: 'Air Quality', icon: <MailIcon sx={{ color: 'white' }} />, path: '/air-quality' },
+            { text: 'Hot Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/hot-weather' },
+            { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
+            { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
+          ].map((item) => (
+            <ListItem key={item.text} disablePadding sx={{ backgroundColor: '#2B3336' }}>
+              <ListItemButton component={RouterLink} to={item.path}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} style={{ color: 'white' }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
     </div>
   );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
 
   const [searchCity, setSearchCity] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
@@ -97,11 +115,11 @@ export function Coldweather(props) {
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        const apiKey = 'f8f45a6cbd804745b7384614241701'; // Replace with your WeatherAPI.com key
+        const apiKey = 'f8f45a6cbd804745b7384614241701'; //takes the api key
         const city = selectedCity;
-        const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=7`;
+        const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=7`; //reference the api key and ensures that the city chosen can be modified in the url
 
-        const response = await fetch(apiUrl);
+        const response = await fetch(apiUrl); //fetches the apiurl and the waits for a response from the api
         const data = await response.json();
 
         if (data.forecast && data.forecast.forecastday) {
@@ -132,36 +150,47 @@ export function Coldweather(props) {
         sx={{
           bgcolor: '#2B3336',
           width: {
-            sm: `calc(100% - ${drawerWidth}px)`
+            sm: `calc(100% - ${drawerWidth}px)`,
           },
           ml: {
-            sm: `${drawerWidth}px`
+            sm: `${drawerWidth}px`,
           },
+          zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
         <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{
+              mr: 2,
+              display: {
+                sm: 'none',
+              },
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            HAG
+          </Typography>
+          <Box sx={{ flexGrow: 1 }} />
           <TextField
-            id="search-city"
             label="Search City"
             variant="outlined"
             size="small"
             value={searchCity}
             onChange={(e) => setSearchCity(e.target.value)}
             sx={{
-              id:{color: 'white'},
-              label:{color: 'white'},
-              variant:{borderColor: 'white',},
+              label: { color: 'white' },
+              '& fieldset': { borderColor: 'white !important' }, // Set the outline color
             }}
           />
           <IconButton color="inherit" onClick={handleSearch}>
             <SearchIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap component="div"
-          >
-            HAG
-          </Typography>
         </Toolbar>
       </AppBar>
       <Box
@@ -171,50 +200,12 @@ export function Coldweather(props) {
             sm: drawerWidth,
           },
           flexShrink: {
-            sm: 0
-          }
+            sm: 0,
+          },
         }}
         aria-label="mailbox folders"
       >
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            display: {
-              xs: 'block',
-              sm: 'none',
-            },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: {
-              xs: 'none',
-              sm: 'block',
-            },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              bgcolor: '#2B3336',
-              width: drawerWidth
-            },
-          }
-          }
-          open
-        >
-          {drawer}
-        </Drawer>
+        {drawer}
       </Box>
       <Box
         sx={{

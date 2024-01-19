@@ -173,7 +173,7 @@ export function ResponsiveDrawer(props) {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
-              backgroundColor: '#2B3336',
+              backgroundColor: '#2B3336', //when in mobile view this will change the bottom half of the drawer box
             },
           }}
         >
@@ -182,16 +182,17 @@ export function ResponsiveDrawer(props) {
           <Divider />
           <List sx={{ backgroundColor: '#2B3336'}}>
             {[
-              { text: 'Dashboard', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/dashboard' },
+              { text: 'Profile', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/profile' },
               { text: 'Air Quality', icon: <MailIcon sx={{ color: 'white' }} />, path: '/air-quality' },
               { text: 'Hot Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/hot-weather' },
               { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
               { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
             ].map((item) => (
-              <ListItem key={item.text} disablePadding sx={{ backgroundColor: '#2B3336'}}>
+              <ListItem key={item.text} disablePadding sx={{ backgroundColor: '#2B3336'}}> 
+              {/* //above is what will change the background of the list items background */}
                 <ListItemButton component={RouterLink} to={item.path}>
                   <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} style={{ color: 'white' }} />
+                  <ListItemText primary={item.text} style={{ color: 'white' }} /> {/* this changes the text color of the drawer*/}
                 </ListItemButton>
               </ListItem>
             ))}
@@ -432,8 +433,16 @@ export function ResponsiveDrawer(props) {
             fullWidth
             value={medicalHistory[0]}
             onChange={(e) => handleMedicalHistoryChange(0, e.target.value)}
-            sx={{ marginBottom: 2 }}
-          />
+              sx={{
+                marginBottom: 2,
+                label: { color: 'white' },
+                '& fieldset': { borderColor: 'white !important' },
+                '& input': { color: 'white' }, // Set the outline color
+              }}
+              inputProps={{
+                style: { color: 'white' }, // Additional style for the input
+              }}
+            />
           <TextField
             label="Condition 2"
             multiline
@@ -442,7 +451,15 @@ export function ResponsiveDrawer(props) {
             fullWidth
             value={medicalHistory[1]}
             onChange={(e) => handleMedicalHistoryChange(1, e.target.value)}
-            sx={{ marginBottom: 2 }}
+            sx={{
+              marginBottom: 2,
+              label: { color: 'white' },
+              '& fieldset': { borderColor: 'white !important' },// Set the outline color
+              '& input': { color: 'white' }, 
+            }}
+            inputProps={{
+              style: { color: 'white' }, // Additional style for the input
+            }}
           />
           <TextField
             label="Condition 3"
@@ -452,6 +469,14 @@ export function ResponsiveDrawer(props) {
             fullWidth
             value={medicalHistory[2]}
             onChange={(e) => handleMedicalHistoryChange(2, e.target.value)}
+            sx={{
+              label: { color: 'white' },
+              '& fieldset': { borderColor: 'white !important' },// Set the outline color
+              '& input': { color: 'white' }, // Set the outline color
+            }}
+            inputProps={{
+              style: { color: 'white' }, // Additional style for the input
+            }}
           />
         </Box>
       </Box>
