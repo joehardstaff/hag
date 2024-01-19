@@ -8,12 +8,13 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import img1 from '../login/assets/HAG-logos.jpeg';
+import img1 from '../login/assets/HAG-logos.jpeg'; //Need this imported in order to bring logo to life
+import { Link as RouterLink } from 'react-router-dom'; //This must be imported in order to link pages together, otherwise this will not work
 
 const defaultTheme = createTheme();
 
 // copied this off youtube, still yet to be used, i dont know what it does i dont know how to use it 
-export function SignUp() {
+export function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -23,10 +24,15 @@ export function SignUp() {
     });
   };
 
-
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+    <ThemeProvider 
+    theme={defaultTheme}
+    >
+      <Grid 
+      container 
+      component="main" 
+      sx={{ height: '100vh' }}
+      >
         <CssBaseline />
         {/* This Display the Picture to the left half of the screen, currently using a website hosting it, must change */}
         <Grid
@@ -71,7 +77,7 @@ export function SignUp() {
                 color: '#FFFFFF',
             }}
             >
-              Signup
+              Login
             </Typography>
             {/* This holds emal box im pretty sure, again the program goes to shit otherwise, so we will go with this  */}
             <Box 
@@ -99,9 +105,9 @@ export function SignUp() {
                     bgcolor: '#272829',
                     input:{color: '#FFFFFF'},
                     label:{color: '#FFFFFF'},
+                    borderRadius: '12px',
                 }}
               />
-              {/* Self explanatory really */}
               <TextField
                 margin="normal"
                 required
@@ -110,30 +116,35 @@ export function SignUp() {
                 label="UserName"
                 name="username"
                 autoComplete="username"
+                autoFocus
                 variant="filled"
                 sx={{ 
-                    bgcolor: '#272829',
                     mt: 9,
-                    label:{color: '#FFFFFF'},
+                    bgcolor: '#272829',
                     input:{color: '#FFFFFF'},
+                    label:{color: '#FFFFFF'},
+                    borderRadius: '12px',
                 }}
               />
-                            <TextField
+              <TextField
                 margin="normal"
                 required
                 fullWidth
-                id="full name"
+                id="fullname"
                 label="Full Name"
-                name="full name"
-                autoComplete="full name"
+                name="fullname"
+                autoComplete="fullname"
+                autoFocus
                 variant="filled"
                 sx={{ 
-                    bgcolor: '#272829',
                     mt: 9,
-                    label:{color: '#FFFFFF'},
+                    bgcolor: '#272829',
                     input:{color: '#FFFFFF'},
+                    label:{color: '#FFFFFF'},
+                    borderRadius: '12px',
                 }}
               />
+              {/* Self explanatory really */}
               <TextField
                 margin="normal"
                 required
@@ -149,20 +160,24 @@ export function SignUp() {
                     mt: 9,
                     label:{color: '#FFFFFF'},
                     input:{color: '#FFFFFF'},
+                    borderRadius: '12px',
                 }}
               />
               {/* This is the button at the bottom, all sorted i have no issues with it so good stuff all round (i think) */}
               <Button
+                component={RouterLink}
+                to="/profile"
                 type="submit"
                 size="md"
                 onClick={function(){}}
                 variant="contained"
                 sx={{ 
-                    mt: 9, 
+                    mt: 15, 
                     mb: 2,
-                    color: 'white',
                     bgcolor: '#272829', 
                     variant:{color:'white'},
+                    width: '200px',
+                    borderRadius: '12px',
                 }}
               >
                 Login
@@ -175,15 +190,13 @@ export function SignUp() {
                 </Grid>
               </Grid>
               {/* I fucking hate the blue shit, its so ugly jesus christ */}
-              <Link 
-                    href="/"  // Update this to the correct path of your signup page
-                    variant="body2"
-                    sx={{
-                        color: 'white',
-                    }}
-                    >
-                    {"Have a Account? Log in"}
-              </Link>
+              <Link
+                component={RouterLink}
+                to="/"
+                variant="body2"
+              >
+                {"Don't have an account? Log in"}
+                </Link>
             </Box>
           </Box>
         </Grid>
@@ -192,4 +205,4 @@ export function SignUp() {
   );
 }
 
-export default SignUp;
+export default Login;

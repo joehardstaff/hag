@@ -173,13 +173,14 @@ export function ResponsiveDrawer(props) {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              backgroundColor: '#2B3336',
             },
           }}
         >
           {/* Drawer content */}
           <Toolbar />
           <Divider />
-          <List>
+          <List sx={{ backgroundColor: '#2B3336'}}>
             {[
               { text: 'Dashboard', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/dashboard' },
               { text: 'Air Quality', icon: <MailIcon sx={{ color: 'white' }} />, path: '/air-quality' },
@@ -187,7 +188,7 @@ export function ResponsiveDrawer(props) {
               { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
               { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
             ].map((item) => (
-              <ListItem key={item.text} disablePadding>
+              <ListItem key={item.text} disablePadding sx={{ backgroundColor: '#2B3336'}}>
                 <ListItemButton component={RouterLink} to={item.path}>
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.text} style={{ color: 'white' }} />
