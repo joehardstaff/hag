@@ -219,8 +219,8 @@ export function ResponsiveDrawer(props) {
           <Divider />
           <List>
             {[
-              { text: 'Dashboard', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/dashboard' },
-              { text: 'Air Quality', icon: <MailIcon sx={{ color: 'white' }} />, path: '/air-quality' },
+              { text: 'Profile', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/profile' },
+              { text: 'Air Quality/Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/air-quality' },
               { text: 'Hot Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/hot-weather' },
               { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
               { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
