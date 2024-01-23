@@ -49,7 +49,7 @@ const WeatherBox = ({ day, highTemp, lowTemp, description, windMph, humidity, fe
     <Typography variant="body2">{description}</Typography>
     <Typography variant="body2">Wind Speed: {windMph} mph</Typography>
     <Typography variant="body2">Humidity: {humidity}%</Typography>
-    <Typography variant="body2">Feels Like: {feelsLikeC}°C</Typography>
+    <Typography variant="body2">Feels Like: {Math.round(feelsLikeC)}°C</Typography>
     <Typography variant="body2">UV Index: {uv}</Typography>
     <Typography variant="body2">Wind Gust: {gustMph} mph</Typography>
   </div>
