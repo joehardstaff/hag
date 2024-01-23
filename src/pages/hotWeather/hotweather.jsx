@@ -140,7 +140,7 @@ export function Hotweather(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Cold Weather Advice
+            Hot Weather Advice
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <TextField

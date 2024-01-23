@@ -140,7 +140,7 @@ export function Rainyweather(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Cold Weather Advice
+            Rainy Weather Advice
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <TextField
