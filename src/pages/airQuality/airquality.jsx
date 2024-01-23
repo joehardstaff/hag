@@ -31,7 +31,7 @@ const WeatherIcons = {
   'Thundery outbreaks': 'WiThunderstorm',
 };
 
-const WeatherBox = ({ day, highTemp, lowTemp, description, airQuality }) => (
+const WeatherBox = ({ day, highTemp, lowTemp, description, windMph, humidity, feelsLikeC, uv, gustMph }) => (
   <div style={{
     backgroundColor: '#2B3336',
     color: 'white',
@@ -47,7 +47,11 @@ const WeatherBox = ({ day, highTemp, lowTemp, description, airQuality }) => (
     <Typography variant="h6">{day}</Typography>
     <Typography variant="body1">High: {Math.round(highTemp)}°, Low: {Math.round(lowTemp)}°</Typography>
     <Typography variant="body2">{description}</Typography>
-    <Typography variant="body2">Air Quality: {airQuality}</Typography>
+    <Typography variant="body2">Wind Speed: {windMph} mph</Typography>
+    <Typography variant="body2">Humidity: {humidity}%</Typography>
+    <Typography variant="body2">Feels Like: {feelsLikeC}°C</Typography>
+    <Typography variant="body2">UV Index: {uv}</Typography>
+    <Typography variant="body2">Wind Gust: {gustMph} mph</Typography>
   </div>
 );
 
@@ -64,40 +68,81 @@ export function Coldweather(props) {
   const drawer = (
     <div>
       <Drawer
-        variant="permanent"
-        sx={{
-          display: {
-            xs: 'none',
-            sm: 'block',
-          },
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            bgcolor: '#2B3336',
-            width: drawerWidth,
-          },
-        }}
-        open
-      >
-        {/* Drawer content */}
-        <Toolbar />
-        <Divider />
-        <List>
-          {[
-            { text: 'Profile', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/profile' },
-            { text: 'Air Quality/Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/air-quality' },
-            { text: 'Hot Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/hot-weather' },
-            { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
-            { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
-          ].map((item) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton component={RouterLink} to={item.path}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} style={{ color: 'white' }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+    container={container}
+    variant="temporary"
+    open={mobileOpen}
+    onClose={handleDrawerToggle}
+    ModalProps={{
+      keepMounted: true,
+    }}
+    sx={{
+      display: {
+        xs: 'block',
+        sm: 'none',
+      },
+      '& .MuiDrawer-paper': {
+        boxSizing: 'border-box',
+        width: drawerWidth,
+        backgroundColor: '#2B3336', //when in mobile view this will change the bottom half of the drawer box
+      },
+    }}
+  >
+    {/* Drawer content */}
+    <Toolbar />
+    <Divider />
+    <List sx={{ backgroundColor: '#2B3336'}}>
+      {[
+        { text: 'Profile', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/profile' },
+        { text: 'Air Quality', icon: <MailIcon sx={{ color: 'white' }} />, path: '/air-quality' },
+        { text: 'Hot Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/hot-weather' },
+        { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
+        { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
+      ].map((item) => (
+        <ListItem key={item.text} disablePadding sx={{ backgroundColor: '#2B3336'}}> 
+        {/* //above is what will change the background of the list items background */}
+          <ListItemButton component={RouterLink} to={item.path}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.text} style={{ color: 'white' }} /> {/* this changes the text color of the drawer*/}
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
+  </Drawer>
+      <Drawer
+          variant="permanent"
+          sx={{
+            display: {
+              xs: 'none',
+              sm: 'block',
+            },
+            '& .MuiDrawer-paper': {
+              boxSizing: 'border-box',
+              bgcolor: '#2B3336',
+              width: drawerWidth,
+            },
+          }}
+          open
+        >
+          {/* Drawer content */}
+          <Toolbar />
+          <Divider />
+          <List>
+            {[
+              { text: 'Profile', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/profile' },
+              { text: 'Air Quality/Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/air-quality' },
+              { text: 'Hot Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/hot-weather' },
+              { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
+              { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
+            ].map((item) => (
+              <ListItem key={item.text} disablePadding>
+                <ListItemButton component={RouterLink} to={item.path}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} style={{ color: 'white' }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
     </div>
   );
 
@@ -109,14 +154,20 @@ export function Coldweather(props) {
     setSelectedCity(searchCity);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        const apiKey = 'f8f45a6cbd804745b7384614241701'; // takes the api key
+        const apiKey = 'f8f45a6cbd804745b7384614241701';
         const city = selectedCity;
-        const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=7`; // reference the api key and ensures that the city chosen can be modified in the url
+        const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=7`;
 
-        const response = await fetch(apiUrl); // fetches the apiurl and then waits for a response from the api
+        const response = await fetch(apiUrl);
         const data = await response.json();
 
         if (data.forecast && data.forecast.forecastday) {
@@ -125,7 +176,11 @@ export function Coldweather(props) {
             highTemp: dayData.day.maxtemp_c,
             lowTemp: dayData.day.mintemp_c,
             description: dayData.day.condition.text,
-            airQuality: dayData.air_quality?.pm10,
+            windMph: dayData.day.maxwind_mph,
+            humidity: dayData.day.avghumidity,
+            feelsLikeC: dayData.day.avgtemp_c,
+            uv: dayData.day.uv,
+            gustMph: dayData.day.maxgust_mph,
           }));
 
           setWeatherData(weeklyWeather);
@@ -181,9 +236,10 @@ export function Coldweather(props) {
             size="small"
             value={searchCity}
             onChange={(e) => setSearchCity(e.target.value)}
+            onKeyDown={handleKeyDown}
             sx={{
               label: { color: 'white' },
-              '& fieldset': { borderColor: 'white !important' }, // Set the outline color
+              '& fieldset': { borderColor: 'white !important' },
             }}
           />
           <IconButton color="inherit" onClick={handleSearch}>
@@ -205,33 +261,36 @@ export function Coldweather(props) {
       >
         {drawer}
       </Box>
-<Box
-  sx={{
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-    gap: '16px',
-    minHeight: '100vh',
-    bgcolor: '#2B3336',
-    overflowY: 'auto',
-    padding: 9,
-    width: '100%',
-  }}
->
-  {weatherData.map((weather, index) => (
-     <div key={index} style={{ outline: '2px solid white', borderRadius: '8px' }}>
-    <WeatherBox
-      key={index}
-      day={weather.day}
-      highTemp={weather.highTemp}
-      lowTemp={weather.lowTemp}
-      description={weather.description}
-      airQuality={weather.airQuality}
-    />
-    </div>
-  ))}
-</Box>
-
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          flexGrow: 1,
+          gap: '16px',
+          minHeight: '100vh',
+          bgcolor: '#2B3336',
+          overflowY: 'auto',
+          padding: 9,
+          width: '100%',
+        }}
+      >
+        {weatherData.map((weather, index) => (
+            <div key={index} style={{ outline: '2px solid white', borderRadius: '8px' }}>
+          <WeatherBox
+            key={index}
+            day={weather.day}
+            highTemp={weather.highTemp}
+            lowTemp={weather.lowTemp}
+            description={weather.description}
+            windMph={weather.windMph}
+            humidity={weather.humidity}
+            feelsLikeC={weather.feelsLikeC}
+            uv={weather.uv}
+            gustMph={weather.gustMph}
+          />
+          </div>
+        ))}
+      </Box>
     </Box>
   );
 }
