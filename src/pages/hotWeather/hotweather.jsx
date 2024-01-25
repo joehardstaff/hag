@@ -29,7 +29,7 @@ export function Hotweather(props) {
 
   const drawer = (
     <div>
-      <Drawer
+          <Drawer
     container={container}
     variant="temporary"
     open={mobileOpen}
@@ -59,6 +59,7 @@ export function Hotweather(props) {
         { text: 'Hot Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/hot-weather' },
         { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
         { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
+        { text: 'Booking System', icon: <MailIcon sx={{ color: 'white' }} />, path: '/booking-system' },
       ].map((item) => (
         <ListItem key={item.text} disablePadding sx={{ backgroundColor: '#2B3336'}}> 
         {/* //above is what will change the background of the list items background */}
@@ -95,6 +96,7 @@ export function Hotweather(props) {
               { text: 'Hot Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/hot-weather' },
               { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
               { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
+              { text: 'Booking System', icon: <MailIcon sx={{ color: 'white' }} />, path: '/booking-system' },
             ].map((item) => (
               <ListItem key={item.text} disablePadding>
                 <ListItemButton component={RouterLink} to={item.path}>
