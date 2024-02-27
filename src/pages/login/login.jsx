@@ -9,20 +9,43 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import img1 from './assets/HAG-logos.jpeg'; //Need this imported in order to bring logo to life
-import { Link as RouterLink } from 'react-router-dom'; //This must be imported in order to link pages together, otherwise this will not work
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { auth } from '../../../firebase';
+import { useState } from 'react';
+import { signInWithEmailAndPassword } from "firebase/auth"; 
+import Alert from '@mui/material/Alert';
+import CheckIcon from '@mui/icons-material/Check';
 
 const defaultTheme = createTheme();
 
 // copied this off youtube, still yet to be used, i dont know what it does i dont know how to use it 
-export function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        setSuccess("Login successful!");
+        successfulAuth();
+        setError(null); 
+      })
+      .catch((error) => {
+        console.log(error);
+        setError("Email or Password incorrect, Please try again"); 
+        setSuccess(null); 
+      });
   };
+
+  const Navigate = useNavigate();
+
+  const successfulAuth = () => {
+    Navigate('/profile')
+  }
 
   return (
     <ThemeProvider 
@@ -84,7 +107,7 @@ export function Login() {
             textAlign='center' 
             component="form" 
             noValidate 
-            onSubmit={handleSubmit} 
+            onSubmit={handleSignIn} 
             sx={{ 
                 mt: 1
                 }}
@@ -100,6 +123,8 @@ export function Login() {
                 autoComplete="email"
                 autoFocus
                 variant="filled"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 sx={{ 
                     mt: 9,
                     bgcolor: '#272829',
@@ -119,6 +144,8 @@ export function Login() {
                 autoComplete="password"
                 type="password"
                 variant="filled"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 sx={{ 
                     bgcolor: '#272829',
                     mt: 9,
@@ -129,11 +156,9 @@ export function Login() {
               />
               {/* This is the button at the bottom, all sorted i have no issues with it so good stuff all round (i think) */}
               <Button
-                component={RouterLink}
-                to="/profile"
+                onClick= {useNavigate}
                 type="submit"
                 size="md"
-                onClick={function(){}}
                 variant="contained"
                 sx={{ 
                     mt: 15, 
@@ -146,7 +171,16 @@ export function Login() {
               >
                 Login
               </Button>
-              {/* Bunch of useless shit, will clear when done with the program, fuck you for sortening the deadline */}
+            {(error || success) && (
+            <Alert 
+            icon={<CheckIcon fontSize="inherit" />} 
+            severity={error ? "error" : "success"}>
+            {error && <p style={{ color: 'red' }}>{error}</p>}  
+            {success && <p style={{ color: 'green' }}>{success}</p>}
+            </Alert>
+          )}
+              {/* Bunch of useless shit, will clear when done with the program, fuck you for sortening the deadline
+              to add to this also i cant get rid of any of this because the program decided it cant be fucked to put anything where its meant to go */}
               <Grid container>
                 <Grid item xs>
                 </Grid>
@@ -160,6 +194,16 @@ export function Login() {
                 variant="body2"
               >
                 {"Don't have an account? Sign Up"}
+                </Link>
+                <Link
+                component={RouterLink}
+                to="/reset-password"
+                variant="body2"
+                sx={{
+                  marginLeft: '30px'
+                }}
+              >
+                {"Forgot your Password?"}
                 </Link>
             </Box>
           </Box>

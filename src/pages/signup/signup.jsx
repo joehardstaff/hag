@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { useState } from 'react';
+import { auth } from '../../../firebase';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,20 +11,33 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import img1 from '../login/assets/HAG-logos.jpeg'; //Need this imported in order to bring logo to life
-import { Link as RouterLink } from 'react-router-dom'; //This must be imported in order to link pages together, otherwise this will not work
+import { Link as RouterLink } from 'react-router-dom'; //This must be imported in order to link pages together, otherwise this will not work;
+import Alert from '@mui/material/Alert';
+import CheckIcon from '@mui/icons-material/Check';
+import img1 from '../login/assets/HAG-logos.jpeg';
 
 const defaultTheme = createTheme();
 
 // copied this off youtube, still yet to be used, i dont know what it does i dont know how to use it 
-export function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+const SignUp = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        setSuccess("Sign up successful!");
+        setError(null); 
+      })
+      .catch((error) => {
+        console.log(error);
+        setError("Email or Password incorrect, Please try again"); 
+        setSuccess(null); 
+      });
   };
 
   return (
@@ -77,14 +93,14 @@ export function Login() {
                 color: '#FFFFFF',
             }}
             >
-              Login
+              Sign Up
             </Typography>
             {/* This holds emal box im pretty sure, again the program goes to shit otherwise, so we will go with this  */}
             <Box 
             textAlign='center' 
             component="form" 
             noValidate 
-            onSubmit={handleSubmit} 
+            onSubmit={handleSignIn} 
             sx={{ 
                 mt: 1
                 }}
@@ -100,42 +116,8 @@ export function Login() {
                 autoComplete="email"
                 autoFocus
                 variant="filled"
-                sx={{ 
-                    mt: 9,
-                    bgcolor: '#272829',
-                    input:{color: '#FFFFFF'},
-                    label:{color: '#FFFFFF'},
-                    borderRadius: '12px',
-                }}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="UserName"
-                name="username"
-                autoComplete="username"
-                autoFocus
-                variant="filled"
-                sx={{ 
-                    mt: 9,
-                    bgcolor: '#272829',
-                    input:{color: '#FFFFFF'},
-                    label:{color: '#FFFFFF'},
-                    borderRadius: '12px',
-                }}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="fullname"
-                label="Full Name"
-                name="fullname"
-                autoComplete="fullname"
-                autoFocus
-                variant="filled"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 sx={{ 
                     mt: 9,
                     bgcolor: '#272829',
@@ -155,6 +137,8 @@ export function Login() {
                 autoComplete="password"
                 type="password"
                 variant="filled"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 sx={{ 
                     bgcolor: '#272829',
                     mt: 9,
@@ -165,8 +149,6 @@ export function Login() {
               />
               {/* This is the button at the bottom, all sorted i have no issues with it so good stuff all round (i think) */}
               <Button
-                component={RouterLink}
-                to="/profile"
                 type="submit"
                 size="md"
                 onClick={function(){}}
@@ -176,12 +158,20 @@ export function Login() {
                     mb: 2,
                     bgcolor: '#272829', 
                     variant:{color:'white'},
-                    width: '200px',
+                    width: '250px',
                     borderRadius: '12px',
                 }}
               >
-                Login
+                Sign Up
               </Button>
+              {(error || success) && (
+            <Alert 
+            icon={<CheckIcon fontSize="inherit" />} 
+            severity={error ? "error" : "success"}>
+            {error && <p style={{ color: 'red' }}>{error}</p>}  
+            {success && <p style={{ color: 'green' }}>{success}</p>}
+            </Alert>
+          )}
               {/* Bunch of useless shit, will clear when done with the program, fuck you for sortening the deadline */}
               <Grid container>
                 <Grid item xs>
@@ -195,7 +185,7 @@ export function Login() {
                 to="/"
                 variant="body2"
               >
-                {"Don't have an account? Log in"}
+                {"Have an account? LogIn"}
                 </Link>
             </Box>
           </Box>
@@ -205,4 +195,4 @@ export function Login() {
   );
 }
 
-export default Login;
+export default SignUp;
