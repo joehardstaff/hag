@@ -9,6 +9,7 @@ import AirQuality from './pages/airQuality/airquality';
 import RainyWeather from './pages/rainyWeather/rainyWeather';
 import HotWeather from './pages/hotWeather/hotweather';
 import BookingSystem from './pages/bookingSystem/bookingSystem';
+import ResetPassword from './pages/resetPassword/Reset';
 
 
 // Add future files here that need a directory in order to link pages together
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Router>
      <Routes>
      <Route path="/booking-system" element={<BookingSystem />} />
+     <Route path="/reset-password" element={<ResetPassword />} />
      <Route path="/hot-weather" element={<HotWeather />} />
       <Route path="/rainy-weather" element={<RainyWeather />} />
       <Route path="/air-quality" element={<AirQuality />} />

@@ -227,6 +227,7 @@ export function ResponsiveDrawer(props) {
               { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
               { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
               { text: 'Booking System', icon: <MailIcon sx={{ color: 'white' }} />, path: '/booking-system' },
+              { text: 'Sign Out', icon: <InboxIcon sx={{color: 'white'}} />, path: '/'},
             ].map((item) => (
               <ListItem key={item.text} disablePadding>
                 <ListItemButton component={RouterLink} to={item.path}>

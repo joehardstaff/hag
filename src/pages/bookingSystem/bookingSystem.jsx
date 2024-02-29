@@ -1,23 +1,17 @@
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import SearchIcon from '@mui/icons-material/Search';
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Dialog, DialogTitle, DialogContent, Button, Divider } from '@mui/material';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Dialog, DialogTitle, DialogContent, Button } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 
-
-
+// Add the TimeBox component here
 const TimeBox = ({ day, time, isBooked, onClick }) => {
   return (
     <Box
@@ -80,64 +74,42 @@ const BookingSystem = () => {
     const dayBookedTimes = bookedTimes[day] || [];
     return dayBookedTimes.includes(time);
   };
-  const mobileViewing = (props) => {
-    const { window } = props;
-    const [mobileOpen, setMobileOpen] = React.useState(false);
-  
-    const handleDrawerToggle = () => {
-      setMobileOpen(!mobileOpen);
-    };
-  };
 
-  const container = window !== undefined ? () => window().document.body : undefined;
-  
-  
-  const drawer = (
-    <div>        
-    <Drawer
-    container={container}
-    variant="temporary"
-    open={mobileOpen}
-    onClose={handleDrawerToggle}
-    ModalProps={{
-      keepMounted: true,
-    }}
-    sx={{
-      display: {
-        xs: 'block',
-        sm: 'none',
-      },
-      '& .MuiDrawer-paper': {
-        boxSizing: 'border-box',
-        width: drawerWidth,
-        backgroundColor: '#2B3336', //when in mobile view this will change the bottom half of the drawer box
-      },
-    }}
-  >
-    {/* Drawer content */}
-    <Toolbar />
-    <Divider />
-    <List sx={{ backgroundColor: '#2B3336'}}>
-      {[
-        { text: 'Profile', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/profile' },
-        { text: 'Air Quality', icon: <MailIcon sx={{ color: 'white' }} />, path: '/air-quality' },
-        { text: 'Hot Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/hot-weather' },
-        { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
-        { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
-        { text: 'Booking System', icon: <MailIcon sx={{ color: 'white' }} />, path: '/booking-system' },
-        { text: 'Sign Out', icon: <InboxIcon sx={{color: 'white'}} />, path: '/'},
-      ].map((item) => (
-        <ListItem key={item.text} disablePadding sx={{ backgroundColor: '#2B3336'}}> 
-        {/* //above is what will change the background of the list items background */}
-          <ListItemButton component={RouterLink} to={item.path}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} style={{ color: 'white' }} /> {/* this changes the text color of the drawer*/}
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
-  </Drawer>
-      <Drawer
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        sx={{
+          bgcolor: '#2B3336',
+          width: {
+            sm: `calc(100% - ${drawerWidth}px)`,
+          },
+          ml: {
+            sm: `${drawerWidth}px`,
+          },
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+      >
+        <Toolbar>
+          <Typography variant="h6" noWrap component="div">
+            Booking System for Home Evaluation
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Box
+        component="nav"
+        sx={{
+          width: {
+            sm: drawerWidth,
+          },
+          flexShrink: {
+            sm: 0,
+          },
+        }}
+        aria-label="booking options"
+      >
+        <Drawer
           variant="permanent"
           sx={{
             display: {
@@ -163,7 +135,6 @@ const BookingSystem = () => {
               { text: 'Cold Weather', icon: <MailIcon sx={{ color: 'white' }} />, path: '/cold-weather' },
               { text: 'Rainy Weather', icon: <InboxIcon sx={{ color: 'white' }} />, path: '/rainy-weather' },
               { text: 'Booking System', icon: <MailIcon sx={{ color: 'white' }} />, path: '/booking-system' },
-              { text: 'Sign Out', icon: <InboxIcon sx={{color: 'white'}} />, path: '/'},
             ].map((item) => (
               <ListItem key={item.text} disablePadding>
                 <ListItemButton component={RouterLink} to={item.path}>
@@ -174,78 +145,14 @@ const BookingSystem = () => {
             ))}
           </List>
         </Drawer>
-    </div>
-  );
-
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          bgcolor: '#2B3336',
-          width: {
-            sm: `calc(100% - ${drawerWidth}px)`,
-          },
-          ml: {
-            sm: `${drawerWidth}px`,
-          },
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{
-              mr: 2,
-              display: {
-                sm: 'none',
-              },
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-          Booking System for Home Evaluation
-          </Typography>
-          <Box sx={{ flexGrow: 1 }} />
-          <TextField
-            label="Search"
-            variant="outlined"
-            size="small"
-            sx={{
-              label: { color: 'white' },
-              '& fieldset': { borderColor: 'white !important' },
-            }}
-          />
-          <IconButton color="inherit">
-            <SearchIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{
-          width: {
-            sm: drawerWidth,
-          },
-          flexShrink: {
-            sm: 0,
-          },
-        }}
-        aria-label="mailbox folders"
-      >
-        {drawer}
       </Box>
       <Box
         sx={{
           display: 'flex',
-          flexDirection: 'column',
-          flexGrow: 1,
+          flexDirection: 'row', // Display days and times side by side
           gap: '16px',
+          flexWrap: 'wrap',
+          flexGrow: 1,
           minHeight: '100vh',
           bgcolor: '#2B3336',
           overflowY: 'auto',
@@ -253,7 +160,7 @@ const BookingSystem = () => {
           width: '100%',
         }}
       >
-         {[ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' ].map((day) => (
+        {[ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' ].map((day) => (
           <div key={day}>
             <Typography color="white" variant="h6" gutterBottom>
               {day}
@@ -269,10 +176,10 @@ const BookingSystem = () => {
                 />
               )
             )}
-            </div>
-          ))}
-          </Box>
-          <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+          </div>
+        ))}
+      </Box>
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
         <DialogTitle>Unbook Time</DialogTitle>
         <DialogContent>
           <Typography>Are you sure you want to unbook {selectedTime && `${selectedTime.day} - ${selectedTime.time}`}? </Typography>
@@ -282,10 +189,10 @@ const BookingSystem = () => {
           <Button onClick={() => setDialogOpen(false)} color="primary">
             Cancel
           </Button>
-          </DialogContent>
-          </Dialog>
-        </Box>
+        </DialogContent>
+      </Dialog>
+    </Box>
   );
-}
+};
 
 export default BookingSystem;
