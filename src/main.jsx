@@ -1,33 +1,31 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; 
 import Login from './pages/login/login';
 import Signup from './pages/signup/signup';
-import Profile from './pages/profile/profile';
-import ColdWeather from './pages/coldWeather/coldweather';
-import AirQuality from './pages/airQuality/airquality';
-import RainyWeather from './pages/rainyWeather/rainyWeather';
-import HotWeather from './pages/hotWeather/hotweather';
-import BookingSystem from './pages/bookingSystem/bookingSystem';
+import Tickets from './pages/tickets/tickets';
 import ResetPassword from './pages/resetPassword/Reset';
-
+import Hotel from './pages/hotel/hotel';
+import Education from './pages/education/education';
+import Home from './pages/home/home';
+import Membership from './pages/membership/membership';
+import Account from './pages/account/account';
 
 // Add future files here that need a directory in order to link pages together
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Router>
-     <Routes>
-     <Route path="/booking-system" element={<BookingSystem />} />
-     <Route path="/reset-password" element={<ResetPassword />} />
-     <Route path="/hot-weather" element={<HotWeather />} />
-      <Route path="/rainy-weather" element={<RainyWeather />} />
-      <Route path="/air-quality" element={<AirQuality />} />
-        <Route path="/cold-weather" element={<ColdWeather />} />
-        <Route path="/profile" element={<Profile />} />
+      <Routes>
+        <Route path="/account" element={<Account />} />
+        <Route path="/membership" element={<Membership />} />
+        <Route path="/education" element={<Education />} />
+        <Route path="/hotel" element={<Hotel />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/tickets" element={<Tickets />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Login />} />
       </Routes> 
     </Router>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );

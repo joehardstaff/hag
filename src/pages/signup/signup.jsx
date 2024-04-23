@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { auth } from '../../../firebase';
+import { db, auth } from '../../../firebase';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,11 +14,12 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom'; //This must be imported in order to link pages together, otherwise this will not work;
 import Alert from '@mui/material/Alert';
 import CheckIcon from '@mui/icons-material/Check';
-import img1 from '../login/assets/HAG-logos.jpeg';
+import img1 from '../login/assets/Riget_Zoo.png';
+import { collection, addDoc } from 'firebase/firestore'; 
 
 const defaultTheme = createTheme();
 
-// copied this off youtube, still yet to be used, i dont know what it does i dont know how to use it 
+
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,15 +29,29 @@ const SignUp = () => {
   const handleSignIn = (e) => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential);
-        setSuccess("Sign up successful!");
-        setError(null); 
+      .then(async (userCredential) => {
+        // User signed up successfully
+        const user = userCredential.user;
+        
+        // Save user information to Firestore
+        try {
+          const docRef = await addDoc(collection(db, 'users'), {
+            email: user.email,
+            // Add additional fields as needed
+          });
+          console.log("Document written with ID: ", docRef.id);
+          setSuccess("Sign up successful!");
+          setError(null);
+        } catch (error) {
+          console.error("Error adding document: ", error);
+          setError("An error occurred while signing up. Please try again later.");
+          setSuccess(null);
+        }
       })
       .catch((error) => {
-        console.log(error);
-        setError("Email or Password incorrect, Please try again"); 
-        setSuccess(null); 
+        console.error(error);
+        setError("Email or password incorrect. Please try again.");
+        setSuccess(null);
       });
   };
 
@@ -60,6 +75,7 @@ const SignUp = () => {
             backgroundImage: `url(${img1})`, // Use the imported image as a background
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            backgroundColor: '#2B3336',
           }}
         />
 
@@ -74,7 +90,6 @@ const SignUp = () => {
             bgcolor: '#2B3336'
             }}
         square>
-            {/* Not a fucking clue what this does i just know i need it because the styling goes to shit otherwise */}
           <Box
             sx={{
               my: 8,
@@ -95,7 +110,7 @@ const SignUp = () => {
             >
               Sign Up
             </Typography>
-            {/* This holds emal box im pretty sure, again the program goes to shit otherwise, so we will go with this  */}
+            {/* This holds email box and password box*/}
             <Box 
             textAlign='center' 
             component="form" 
@@ -105,7 +120,9 @@ const SignUp = () => {
                 mt: 1
                 }}
             >
-                {/* This makes the email text go white, box black ect ect any modications to the actual text and box must go here cheers future me */}
+                {/* This makes the email text go white/ensures that user
+                input is sent off to firebase for verification before allowing
+                user through */}
               <TextField
                 margin="normal"
                 required
@@ -172,7 +189,7 @@ const SignUp = () => {
             {success && <p style={{ color: 'green' }}>{success}</p>}
             </Alert>
           )}
-              {/* Bunch of useless shit, will clear when done with the program, fuck you for sortening the deadline */}
+              {/* program really hates if these arent here*/}
               <Grid container>
                 <Grid item xs>
                 </Grid>

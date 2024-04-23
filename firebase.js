@@ -1,17 +1,21 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth"
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDaSWb87sld03gt6OlUddQB29ujV_EO9Ss",
-  authDomain: "college-hag.firebaseapp.com",
-  projectId: "college-hag",
-  storageBucket: "college-hag.appspot.com",
-  messagingSenderId: "47444732432",
-  appId: "1:47444732432:web:2f27910dfe6a9f2e573895",
-  measurementId: "G-1ZQZV5RWKJ"
+  apiKey: "AIzaSyCPY-mjD23tdW53ZbqNnv8C0738ta3Q31s",
+  authDomain: "rigetzoo.firebaseapp.com",
+  databaseURL: "https://rigetzoo-default-rtdb.firebaseio.com",
+  projectId: "rigetzoo",
+  storageBucket: "rigetzoo.appspot.com",
+  messagingSenderId: "844754993545",
+  appId: "1:844754993545:web:2e6684bf9ad56c744ca158",
+  measurementId: "G-L043WW0ZP6"
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+export {app, db, auth};
